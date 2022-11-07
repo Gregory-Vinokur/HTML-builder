@@ -23,13 +23,18 @@ const createHtmlFile = async () => {
 }
 
 const createStyles = async () => {
+    let arr = [];
     const stylesFolder = path.join(__dirname, 'styles');
+    const stylesTypes = await readdir(stylesFolder, { withFileTypes: true });
     const stylesFiles = await readdir(stylesFolder);
     const newStylesFile = path.join(destinationFolder, 'style.css');
-    stylesFiles.forEach(async (file) => {
-        const textStyles = await readFile((stylesFolder + '/' + file), 'utf-8');
-        appendFile(newStylesFile, textStyles);
-    })
+    for (let i = 0; i < stylesFiles.length; i++) {
+        if (path.extname(stylesTypes[i].name) === '.css') {
+            const textCss = await readFile(stylesFolder + '/' + stylesFiles[i], 'utf-8');
+            arr.push(textCss);
+        }
+    }
+    writeFile(newStylesFile, arr.join('\n'));
 }
 
 const addAssets = async () => {
