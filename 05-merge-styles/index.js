@@ -10,7 +10,7 @@ async function mergeStyles() {
     const stylesFiles = await readdir(stylesFolder);
     for (let i = 0; i < stylesFiles.length; i++) {
         if (path.extname(stylesTypes[i].name) === '.css') {
-            const textCss = await readFile(stylesFolder + '/' + stylesFiles[i], 'utf-8');
+            const textCss = await readFile(path.join(stylesFolder, stylesFiles[i]), 'utf-8');
             arr.push(textCss);
         }
     }
