@@ -15,7 +15,7 @@ const createHtmlFile = async () => {
     let newHtml = await readFile(htmlFile, 'utf-8');
     const compFiles = await readdir(componentsFolder, { withFileTypes: true });
     for (let i = 0; i < compFiles.length; i++) {
-        const file = await readFile(componentsFolder + '/' + compFiles[i].name, 'utf-8');
+        const file = await readFile(path.join(componentsFolder, compFiles[i].name), 'utf-8');
         const regExp = new RegExp(`{{${(compFiles[i].name).split('.')[0]}}}`, 'g');
         newHtml = newHtml.replace(regExp, file);
     }
@@ -30,7 +30,7 @@ const createStyles = async () => {
     const newStylesFile = path.join(destinationFolder, 'style.css');
     for (let i = 0; i < stylesFiles.length; i++) {
         if (path.extname(stylesTypes[i].name) === '.css') {
-            const textCss = await readFile(stylesFolder + '/' + stylesFiles[i], 'utf-8');
+            const textCss = await readFile(path.join(stylesFolder, stylesFiles[i]), 'utf-8');
             arr.push(textCss);
         }
     }
@@ -79,4 +79,5 @@ async function buildPage() {
     createStyles();
     addAssets();
 }
+
 buildPage();
